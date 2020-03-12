@@ -2,7 +2,9 @@ package com.minibank.account.domain.entity;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
 @Data
 public class TransactionResult {
 	private String acntNo;
