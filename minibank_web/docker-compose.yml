@@ -1,0 +1,119 @@
+version: '3.7'
+
+services:
+  minibank-eureka:
+    container_name: minibank-eureka
+    image: minibank-eureka
+    build:
+      context: ../minibank_eureka 
+      dockerfile: Dockerfile
+    ports:
+      - "8761:8761"
+    restart: always
+    depends_on:
+      - minibank-account
+      - minibank-customer
+      - minibank-transfer
+    environment:
+      - EUREKA=192.168.0.2
+    networks:
+      - minibank-eureka
+ 
+
+  minibank-account:
+    container_name: minibank-account
+    image: minibank-account
+    build:
+      context: ../minibank_account 
+      dockerfile: Dockerfile
+    ports:
+      - "8075:8075"
+    restart: always
+    environment:
+      - EUREKA=192.168.0.2
+      - POSTGRES=192.168.0.2
+      - CUSTOMER=192.168.0.2
+    networks:
+      - minibank-account
+      
+  minibank-customer:
+    container_name: minibank-customer
+    image: minibank-customer
+    build:
+      context: ../minibank_customer
+      dockerfile: Dockerfile
+    ports:
+      - "8076:8076"
+    restart: always
+    environment:
+      - EUREKA=192.168.0.2
+      - POSTGRES=192.168.0.2
+      - ACCOUNT=192.168.0.2
+      - TRANSFER=192.168.0.2
+    networks:
+      - minibank-customer
+  
+  minibank-transfer:
+    container_name: minibank-transfer
+    image: minibank-transfer
+    build:
+      context: ../minibank_transfer
+      dockerfile: Dockerfile
+    ports:
+      - "8074:8074"
+    restart: always
+    environment:
+      - EUREKA=192.168.0.2
+      - POSTGRES=192.168.0.2
+      - ACCOUNT=192.168.0.2
+      - CUSTOMER=192.168.0.2
+    networks:
+      - minibank-transfer
+  
+  minibank-web:
+    container_name: minibank-web
+    image: minibank-web
+    build:
+      context: ../minibank_web
+      dockerfile: Dockerfile
+    ports:
+      - "8077:8077"
+    restart: always
+    environment:
+      - ACCOUNT=192.168.0.2
+      - CUSTOMER=192.168.0.2
+      - TRANSFER=192.168.0.2
+    networks:
+      - minibank-web
+      
+  postgres:
+    image: postgres
+    container_name: postgres_db
+    ports:
+      - "5432:5432"
+    restart: always
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    #environment:
+    #  POSTGRES_USER: postgres
+    #  POSTGRES_PASSWORD: admin1234
+    networks:
+      - postgres
+            
+volumes:
+  postgres-data:
+    external: true
+
+networks:
+  minibank-eureka:
+    driver: bridge
+  minibank-account:
+    driver: bridge
+  minibank-customer:
+    driver: bridge
+  minibank-transfer:
+    driver: bridge
+  minibank-web:
+    driver: bridge
+  postgres:
+    driver: bridge

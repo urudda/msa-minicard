@@ -1,0 +1,14 @@
+server.port = 8078
+server.servlet.context-path = /minibank
+
+#postreSQL
+spring.datasource.driverClassName = net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+spring.datasource.url = jdbc:log4jdbc:postgresql://${POSTGRES}:5432/cqrs
+spring.datasource.username = postgres
+spring.datasource.password = admin1234
+
+kafka.bootstrapAddress=localhost:9092
+creating.customer.topic.name=creating-customer
+creating.account.topic.name=creating-account
+updating.account.balance.topic.name=updating-account-balance
+updating.transfer.limit.topic.name=updating-transfer-limit

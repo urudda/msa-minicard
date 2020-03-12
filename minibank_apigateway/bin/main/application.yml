@@ -1,0 +1,43 @@
+server:
+  port: 8070
+  servlet:
+    context-path: /minibank
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://${EUREKA}:8761/eureka
+  instance:
+    prefer-ip-address: 'true'
+   
+spring:
+  application:
+    name: minibank-apigateway
+  cloud:
+    gateway:
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials, RETAIN_UNIQUE
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowed-origins: "*"
+            allowed-methods: "*"
+            allowed-headers: "*"
+            allow-credentials: true
+      routes:
+      - id: minibank-account
+        uri: lb://MINIBANK-ACCOUNT
+        predicates:
+        - Path=/minibank/account/**
+      - id: minibank-coustomer
+        uri: lb://MINIBANK-CUSTOMER
+        predicates:
+        - Path=/minibank/customer/**
+      - id: minibank-cqrs
+        uri: lb://MINIBANK-CQRS
+        predicates:
+        - Path=/minibank/cqrs/**
+      - id: minibank-transfer
+        uri: lb://MINIBANK-TRANSFER
+        predicates:
+        - Path=/minibank/transfer/**

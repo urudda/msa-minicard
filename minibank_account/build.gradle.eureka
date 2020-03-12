@@ -1,0 +1,80 @@
+plugins {
+	id 'org.springframework.boot' version '2.2.4.RELEASE'
+	id 'io.spring.dependency-management' version '1.0.8.RELEASE'
+	id 'java'
+	id 'war'
+}
+
+group = 'com.minibank'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+
+	compile('org.springframework.boot:spring-boot-starter-jdbc')
+	compile("org.mybatis.spring.boot:mybatis-spring-boot-starter:1.3.2")
+	compile("commons-collections:commons-collections:3.2")
+	
+	//Kafka
+	compile('org.springframework.kafka:spring-kafka')
+   	
+   	//Json
+   	compile('com.google.code.gson:gson:2.8.5')
+   	
+   	//Lombok
+   	//compile('org.projectlombok:lombok');
+   	compileOnly 'org.projectlombok:lombok:1.18.10'
+	annotationProcessor 'org.projectlombok:lombok:1.18.10'
+   	
+   	//Swagger
+   	compile('io.springfox:springfox-swagger2:2.7.0');
+   	compile('io.springfox:springfox-swagger-ui:2.7.0');
+   	
+   	//DevOn Tester
+	compile files('libs/uta_springboot.jar')
+	
+   	//DB
+	compile group: 'org.postgresql', name: 'postgresql', version: '42.2.5'
+	//Logging
+	compile group: 'org.bgee.log4jdbc-log4j2', name: 'log4jdbc-log4j2-jdbc4.1', version: '1.16'
+	
+	//Actuator
+	compile('org.springframework.boot:spring-boot-starter-actuator')
+			
+	//Hystrix
+	compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-hystrix', version: '2.2.1.RELEASE'
+	
+	//Ribbon
+	compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-ribbon', version: '2.2.1.RELEASE'
+	
+	//Eureka Client 
+	compile('org.springframework.cloud:spring-cloud-starter-netflix-eureka-client')
+	//compile('org.springframework.cloud:spring-cloud-starter-netflix-eureka-server')
+	
+}
+
+ext { 
+	set('springCloudVersion', "Hoxton.SR1") 
+} 
+
+dependencyManagement { 
+	imports { 
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}" 
+	} 
+}
+
+test {
+	useJUnitPlatform()
+}
+
+jar {
+	enabled=true
+	manifest {
+		attributes 'Main-Class' : 'com.minibank.account.AccountApplication'
+	}
+}
