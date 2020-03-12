@@ -214,10 +214,10 @@ public class TransferControllerTest {
     		    .oneDyTrnfLmt(500000000L).build();
     		
     	// BDD -> transfer service 를 정의하기 위해서, stub
-    	BDDMockito.given(transferService.retrieveTransferLimit(cstmId)).willReturn(transferLimit);
+    	BDDMockito.given(transferService.retrieveEnableTransferLimit(cstmId)).willReturn(transferLimit);
     	
     	// when (테스트 수행)
-		mockMvc.perform(get("/transfer/transfer-limit/rest/v0.8/" + cstmId)
+		mockMvc.perform(get("/transfer/transfer-limit/enable/rest/v0.8/" + cstmId)
     			.contentType(MediaType.APPLICATION_JSON))
     			.andExpect(MockMvcResultMatchers.status().isOk())
     			// Transfer Service 를 Mock 으로 만들어 놨기 때문에 현재 return 값이 null이다. 따라서 cstmId 값이 null 이므로 1111 값과 달라서 error
