@@ -1,0 +1,242 @@
+version: '3.7'
+
+services:
+  minibank-eureka:
+    container_name: minibank-eureka
+    image: minibank-eureka
+    build:
+      context: ./minibank_eureka
+      dockerfile: Dockerfile
+    ports:
+      - "8761:8761"
+    restart: always
+    environment:
+      - ACCOUNT=minibank-account
+      - APIGATEWAY=minibank-apigateway
+      - B2BT=minibank-b2bt
+      - CQRS=minibank-cqrs
+      - CUSTOMER=minibank-customer
+      - EUREKA="localhost:8761"
+      - KAFKA=192.168.35.19
+      - POSTGRES=192.168.35.19
+      - TRANSFER=minibank-transfer
+    networks:
+      - backend
+
+  minibank-apigateway:
+    container_name: minibank-apigateway
+    image: minibank-apigateway
+    build:
+      context: ./minibank_apigateway
+      dockerfile: Dockerfile
+    ports:
+      - "8070:8070"
+    restart: always
+    depends_on:
+      - minibank-eureka
+    environment:
+      - ACCOUNT=minibank-account
+      - APIGATEWAY=192.168.35.19
+      - B2BT=minibank-b2bt
+      - CQRS=minibank-cqrs
+      - CUSTOMER=minibank-customer
+      - EUREKA=minibank-eureka
+      - KAFKA=192.168.35.19
+      - POSTGRES=192.168.35.19
+      - TRANSFER=minibank-transfer
+    networks:
+      - backend
+
+  minibank-account:
+    container_name: minibank-account
+    image: minibank-account
+    build:
+      context: ./minibank_account
+      dockerfile: Dockerfile
+    ports:
+      - "8075:8075"
+    restart: always
+    depends_on:
+      - minibank-eureka
+    environment:
+      - ACCOUNT=minibank-account
+      - APIGATEWAY=minibank-apigateway
+      - B2BT=minibank-b2bt
+      - CQRS=minibank-cqrs
+      - CUSTOMER=minibank-customer
+      - EUREKA=minibank-eureka
+      - KAFKA=192.168.35.19
+      - POSTGRES=192.168.35.19
+      - TRANSFER=minibank-transfer
+    networks:
+      - backend
+
+  minibank-customer:
+    container_name: minibank-customer
+    image: minibank-customer
+    build:
+      context: ./minibank_customer
+      dockerfile: Dockerfile
+    ports:
+      - "8076:8076"
+    restart: always
+    depends_on:
+      - minibank-eureka
+    environment:
+      - ACCOUNT=minibank-account
+      - APIGATEWAY=minibank-apigateway
+      - B2BT=minibank-b2bt
+      - CQRS=minibank-cqrs
+      - CUSTOMER=minibank-customer
+      - EUREKA=minibank-eureka
+      - KAFKA=192.168.35.19
+      - POSTGRES=192.168.35.19
+      - TRANSFER=minibank-transfer
+    networks:
+      - backend
+
+  minibank-transfer:
+    container_name: minibank-transfer
+    image: minibank-transfer
+    build:
+      context: ./minibank_transfer
+      dockerfile: Dockerfile
+    ports:
+      - "8074:8074"
+    restart: always
+    depends_on:
+      - minibank-eureka
+    environment:
+      - ACCOUNT=minibank-account
+      - APIGATEWAY=minibank-apigateway
+      - B2BT=minibank-b2bt
+      - CQRS=minibank-cqrs
+      - CUSTOMER=minibank-customer
+      - EUREKA=minibank-eureka
+      - KAFKA=192.168.35.19
+      - POSTGRES=192.168.35.19
+      - TRANSFER=minibank-transfer
+    networks:
+      - backend
+
+  minibank-b2bt:
+    container_name: minibank-b2bt
+    image: minibank-b2bt
+    build:
+      context: ./minibank_b2bt
+      dockerfile: Dockerfile
+    ports:
+      - "8079:8079"
+    restart: always
+    depends_on:
+      - minibank-eureka
+    environment:
+      - ACCOUNT=minibank-account
+      - APIGATEWAY=minibank-apigateway
+      - B2BT=minibank-b2bt
+      - CQRS=minibank-cqrs
+      - CUSTOMER=minibank-customer
+      - EUREKA=minibank-eureka
+      - KAFKA=192.168.35.19
+      - POSTGRES=192.168.35.19
+      - TRANSFER=minibank-transfer
+    networks:
+      - backend
+
+  minibank-cqrs:
+    container_name: minibank-cqrs
+    image: minibank-cqrs
+    build:
+      context: ./minibank_inquiry
+      dockerfile: Dockerfile
+    ports:
+      - "8078:8078"
+    restart: always
+    depends_on:
+      - minibank-eureka
+    environment:
+      - ACCOUNT=minibank-account
+      - APIGATEWAY=minibank-apigateway
+      - B2BT=minibank-b2bt
+      - CQRS=minibank-cqrs
+      - CUSTOMER=minibank-customer
+      - EUREKA=minibank-eureka
+      - KAFKA=192.168.35.19
+      - POSTGRES=192.168.35.19
+      - TRANSFER=minibank-transfer
+    networks:
+      - backend
+
+  minibank_web:
+    container_name: minibank-web
+    image: minibank-web
+    build:
+      context: ./minibank_web
+      dockerfile: Dockerfile
+    ports:
+      - "8077:8077"
+    restart: always
+    depends_on:
+      - minibank-account
+      - minibank-apigateway
+      - minibank-b2bt
+      - minibank-cqrs
+      - minibank-customer
+      - minibank-eureka
+      - minibank-transfer
+    environment:
+      - ACCOUNT=192.168.35.19
+      - APIGATEWAY=192.168.35.19
+      - B2BT=192.168.35.19
+      - CQRS=192.168.35.19
+      - CUSTOMER=192.168.35.19
+      - EUREKA=192.168.35.19
+      - KAFKA=192.168.35.19
+      - POSTGRES=192.168.35.19
+      - TRANSFER=192.168.35.19
+    networks:
+      - frontend
+
+  zookeeper:
+    container_name: minibank-zookeeper
+    image: wurstmeister/zookeeper
+    ports:
+      - "2181:2181"
+    networks:
+      - backend
+
+  kafka:
+    container_name: minibank-kafka
+    image: wurstmeister/kafka
+    ports:
+      - "9092:9092"
+    depends_on:
+      - zookeeper
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+       KAFKA_ADVERTISED_HOST_NAME: 192.168.35.19
+       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+    networks:
+      - backend
+
+#  postgres:
+#    container_name: minibank-postgres
+#    image: postgres
+#    ports:
+#      - "5432:5432"
+#    restart: always
+#    volumes:
+#      - postgres-data:/var/lib/postgresql/data
+#    networks:
+#      - db
+
+#volumes:
+#  postgres-data:
+#    external: true
+
+networks:
+  backend:
+    driver: bridge
+  frontend:
+    driver: bridge
