@@ -43,7 +43,7 @@ public class AccountControllerTest {
 		given(accountService.retrieveAccount(acntNo)).willReturn(account);
 		
 		//when then
-		mockMvc.perform(get("/account/rest/v0.8/" + acntNo)
+		mockMvc.perform(get("/rest/v0.8/" + acntNo)
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.acntNo", equalTo(account.getAcntNo())))

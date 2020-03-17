@@ -53,7 +53,7 @@ class CustomerControllerTest {
 		// when(테스트 수행)
 		// $.cstmId /"$[0].cstmId"
 		mockMvc.perform(MockMvcRequestBuilders
-				.get("/customer/detail/rest/v0.8/" + cstmId)
+				.get("/detail/rest/v0.8/" + cstmId)
 				.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(MockMvcResultMatchers.status().isOk())
 				.andExpect(MockMvcResultMatchers.jsonPath("$.cstmId", Matchers.comparesEqualTo(customer.getCstmId())))
