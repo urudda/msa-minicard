@@ -17,7 +17,6 @@ import com.minibank.transfer.service.TransferService;
 import io.swagger.annotations.ApiOperation;
 
 @RestController
-@RequestMapping(path = "/transfer")
 public class TransferController {
 
     @Resource(name = "transferService")

@@ -41,3 +41,14 @@ spring:
         uri: lb://MINIBANK-TRANSFER
         predicates:
         - Path=/minibank/transfer/**
+
+
+ACCOUNT: minibank-account
+APIGATEWAY: localhost
+B2BT: minibank-b2bt
+CQRS: minibank-cqrs
+CUSTOMER: minibank-customer
+EUREKA: localhost
+KAFKA: localhost
+POSTGRES: localhost
+TRANSFER: minibank-transfer

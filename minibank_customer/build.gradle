@@ -46,9 +46,6 @@ dependencies {
 	//Hystrix
 	compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-hystrix', version: '2.2.1.RELEASE'
 	
-	//Ribbon
-	compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-netflix-ribbon', version: '2.2.1.RELEASE'
-	
 	//Eureka Client 
 	compile('org.springframework.cloud:spring-cloud-starter-netflix-eureka-client')
 	//compile('org.springframework.cloud:spring-cloud-starter-netflix-eureka-server')

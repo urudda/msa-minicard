@@ -15,7 +15,6 @@ import com.minibank.customer.service.CustomerService;
 import io.swagger.annotations.ApiOperation;
 
 @RestController
-@RequestMapping(path = "/customer")
 public class CustomerController {
 
     @Resource(name = "customerService")

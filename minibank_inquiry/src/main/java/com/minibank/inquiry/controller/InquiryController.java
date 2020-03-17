@@ -19,7 +19,6 @@ import io.swagger.annotations.ApiOperation;
 
 @CrossOrigin
 @RestController
-@RequestMapping(path = "/cqrs")
 public class InquiryController {
 
     @Resource(name = "inquiryService")
