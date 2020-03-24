@@ -28,13 +28,9 @@ public class CustomerConsumer {
     public void creatingCustomerListener(Customer customer, Acknowledgment ack) {
         LOGGER.info("Recieved creating customer message: " + customer.getCstmId());
         try {
-//        	/*고객 상세 조회 : 고객 데이터 등록*/
-//        	inquiryService.createCustomer(customer);
-//        	/*휴면 고객 목록 조회 : '고객등록' 작업 등록*/
-//        	// CQRS 휴면계좌용 추가 라인
-//        	inquiryService.updateCreatingCustomerWork(customer);
-        	
-        	inquiryService.createCustomerAndCustomerWork(customer);
+        	/*고객 상세 조회 : 고객 데이터 등록*/
+        	inquiryService.createCustomer(customer);
+
           	ack.acknowledge();
           	
         } catch(Exception e) {

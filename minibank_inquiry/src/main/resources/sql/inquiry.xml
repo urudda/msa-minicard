@@ -28,46 +28,5 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  		FROM TB_ACNT_CQRS
  		WHERE CSTM_ID = #{cstmId}
  	</select>
- 	
-	<select id="selectDormantCustomerList" resultType="com.minibank.inquiry.domain.entity.RecentWork" parameterType="com.minibank.inquiry.domain.entity.RecentWork">
-		<![CDATA[
-		SELECT CSTM_ID, CSTM_NM, RCNT_WORK_DIV_CD, RCNT_WORK_DTM, WORK_ACNT_NO, WORK_TRNS_AMT, WORK_STS_CD
-		FROM TB_RCNT_WORK
-		WHERE RCNT_WORK_DTM < TO_CHAR((CURRENT_TIMESTAMP - INTERVAL'1 MINUTE'),'YYYY-MM-DD HH24:MI:SS')
-		]]>
-	</select>
-	<insert id="insertCreatingCustomerWork" parameterType="com.minibank.inquiry.domain.entity.RecentWork">
-		INSERT INTO TB_RCNT_WORK(CSTM_ID, CSTM_NM, RCNT_WORK_DIV_CD, RCNT_WORK_DTM, WORK_ACNT_NO, WORK_TRNS_AMT, WORK_STS_CD)
-		VALUES(#{cstmId}, #{cstmNm}, #{rcntWorkDivCd}, TO_CHAR(CURRENT_TIMESTAMP, 'YYYY-MM-DD HH24:MI:SS'), '', 0, #{workStsCd})
-	</insert>
-	<update id="updateCreatingAccountWork" parameterType="com.minibank.inquiry.domain.entity.RecentWork">
-		UPDATE TB_RCNT_WORK 
-		SET RCNT_WORK_DTM = TO_CHAR(CURRENT_TIMESTAMP, 'YYYY-MM-DD HH24:MI:SS')
-			, RCNT_WORK_DIV_CD = #{rcntWorkDivCd}
-			, WORK_ACNT_NO = #{workAcntNo}
-			, WORK_STS_CD = #{workStsCd}
-		WHERE CSTM_ID = #{cstmId}
-	</update>
-	<update id="updateTransactionWork" parameterType="com.minibank.inquiry.domain.entity.RecentWork">
-		UPDATE TB_RCNT_WORK 
-		SET RCNT_WORK_DTM = TO_CHAR(CURRENT_TIMESTAMP, 'YYYY-MM-DD HH24:MI:SS')
-			, RCNT_WORK_DIV_CD = #{rcntWorkDivCd}
-			<if test="workTrnsAmt !=null and workTrnsAmt != ''">
-			, WORK_TRNS_AMT = #{workTrnsAmt}
-			</if>
-			, WORK_STS_CD = #{workStsCd}
-		WHERE WORK_ACNT_NO = #{workAcntNo}
-	</update>
-	<update id="updateTransferWork" parameterType="com.minibank.inquiry.domain.entity.RecentWork">
-		UPDATE TB_RCNT_WORK 
-		SET RCNT_WORK_DTM = TO_CHAR(CURRENT_TIMESTAMP, 'YYYY-MM-DD HH24:MI:SS')
-			, RCNT_WORK_DIV_CD = #{rcntWorkDivCd}
-			, WORK_ACNT_NO = #{workAcntNo}
-			<if test="workTrnsAmt !=null and workTrnsAmt != ''">
-			, WORK_TRNS_AMT = #{workTrnsAmt}
-			</if>
-			, WORK_STS_CD = #{workStsCd}
-		WHERE CSTM_ID = #{cstmId}
-	</update>
 	
 </mapper>

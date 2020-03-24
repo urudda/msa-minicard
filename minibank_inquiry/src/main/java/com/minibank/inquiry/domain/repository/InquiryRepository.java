@@ -7,7 +7,6 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.minibank.inquiry.domain.entity.Account;
 import com.minibank.inquiry.domain.entity.Customer;
-import com.minibank.inquiry.domain.entity.RecentWork;
 
 @Mapper
 public interface InquiryRepository {
@@ -19,9 +18,4 @@ public interface InquiryRepository {
     Customer selectCustomer(Customer customer) throws Exception;
     List<Account> selectAccountList(Account account) throws Exception;
     
-	List<RecentWork> selectDormantCustomerList() throws Exception;
-	int insertCreatingCustomerWork(RecentWork recentWork) throws Exception;
-	int updateCreatingAccountWork(RecentWork recentWork) throws Exception;
-	int updateTransactionWork(RecentWork recentWork) throws Exception;
-	int updateTransferWork(RecentWork recentWork) throws Exception;
 }

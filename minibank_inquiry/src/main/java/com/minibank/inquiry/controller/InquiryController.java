@@ -1,8 +1,6 @@
 package com.minibank.inquiry.controller;
 
 
-import java.util.List;
-
 import javax.annotation.Resource;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -12,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.minibank.inquiry.domain.entity.Customer;
-import com.minibank.inquiry.domain.entity.RecentWork;
 import com.minibank.inquiry.service.InquiryService;
 
 import io.swagger.annotations.ApiOperation;
@@ -29,11 +26,5 @@ public class InquiryController {
     public Customer retrieveCustomerDetail(@PathVariable(name = "cstmId") String cstmId) throws Exception{
         return inquiryService.retrieveCustomerDetail(cstmId);
     }
-    
-    @ApiOperation(value = "휴면고객목록조회", httpMethod = "GET", notes = "휴면고객목록조회")
-    @RequestMapping(method = RequestMethod.GET, path = "/dormat-customer/list/rest/v0.8/")
-    public List<RecentWork> retrieveCustomerDetail() throws Exception{
-        return inquiryService.retrieveDormantCustomerList();
-    }
-    
+
 }
