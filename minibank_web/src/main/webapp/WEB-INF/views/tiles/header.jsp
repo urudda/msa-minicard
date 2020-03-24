@@ -27,7 +27,7 @@
     			<li><a href="<%=request.getContextPath()%>/customer/view/createCustomer">고객 등록</a></li>
     			<li><a href="<%=request.getContextPath()%>/customer/view/retrieveCustomer">고객 조회</a></li>
     			<li class="cqrsTab"><a href="<%=request.getContextPath()%>/customer/view/retrieveCustomerCQRS">고객 조회(CQRS)</a></li>
-    			<li class="cqrsTab"><a href="<%=request.getContextPath()%>/customer/view/retrieveDormantCustomer">휴면 고객 조회</a></li>
+    	<%-- 		<li class="cqrsTab"><a href="<%=request.getContextPath()%>/customer/view/retrieveDormantCustomer">휴면 고객 조회</a></li> --%>
     		</ul>
     	</li>
     	<li id="accountMenu">
