@@ -3,7 +3,6 @@ package com.minibank.inquiry.controller;
 
 import javax.annotation.Resource;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -14,7 +13,6 @@ import com.minibank.inquiry.service.InquiryService;
 
 import io.swagger.annotations.ApiOperation;
 
-@CrossOrigin
 @RestController
 public class InquiryController {
 
