@@ -17,8 +17,6 @@ import org.springframework.kafka.support.serializer.JsonDeserializer;
 
 import com.minibank.inquiry.domain.entity.Account;
 import com.minibank.inquiry.domain.entity.Customer;
-import com.minibank.inquiry.domain.entity.TransactionHistory;
-import com.minibank.inquiry.domain.entity.TransferHistory;
 
 @EnableKafka
 @Configuration
@@ -69,45 +67,33 @@ public class KafkaConsumerConfig {
         return factory;
     }
     
-    public ConsumerFactory<String, TransactionHistory> transactionHistoryConsumerFactory() {
-        Map<String, Object> props = new HashMap<>();
-        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
-        props.put(ConsumerConfig.GROUP_ID_CONFIG, "transaction");
-        props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-        props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG,"false");
-        props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG,"earliest");
-        // property로 변경 spring.kafka.consumer.enable-auto-commit=false
-        return new DefaultKafkaConsumerFactory<>(props, new StringDeserializer(), new JsonDeserializer<>(TransactionHistory.class, false));
-    }
-
-    @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, TransactionHistory> transactionHistoryKafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, TransactionHistory> factory = new ConcurrentKafkaListenerContainerFactory<>();
-        // Listener의 AckMode를 수동으로 지정
-        factory.getContainerProperties().setAckMode(AckMode.MANUAL_IMMEDIATE);
-        factory.setConsumerFactory(transactionHistoryConsumerFactory());
-        return factory;
-    }
     
-    public ConsumerFactory<String, TransferHistory> transferHistoryConsumerFactory() {
+    /**
+     * 이체한도 sub
+     * @return
+     */
+    public ConsumerFactory<String, Customer> transferLimitConsumerFactory() {
         Map<String, Object> props = new HashMap<>();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
         props.put(ConsumerConfig.GROUP_ID_CONFIG, "transfer");
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-        props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG,"false");
+        props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG,"false");  
         props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG,"earliest");
-        // property로 변경 spring.kafka.consumer.enable-auto-commit=false
-        return new DefaultKafkaConsumerFactory<>(props, new StringDeserializer(), new JsonDeserializer<>(TransferHistory.class, false));
+        
+        return new DefaultKafkaConsumerFactory<>(props, new StringDeserializer(), new JsonDeserializer<>(Customer.class, false));
     }
 
+    /**
+     * 이체한도 sub
+     * @return
+     */
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, TransferHistory> transferHistoryKafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, TransferHistory> factory = new ConcurrentKafkaListenerContainerFactory<>();
+    public ConcurrentKafkaListenerContainerFactory<String, Customer> transferLimitKafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, Customer> factory = new ConcurrentKafkaListenerContainerFactory<>();
         // Listener의 AckMode를 수동으로 지정
         factory.getContainerProperties().setAckMode(AckMode.MANUAL_IMMEDIATE);
-        factory.setConsumerFactory(transferHistoryConsumerFactory());
+        factory.setConsumerFactory(transferLimitConsumerFactory());
         return factory;
     }
 }
