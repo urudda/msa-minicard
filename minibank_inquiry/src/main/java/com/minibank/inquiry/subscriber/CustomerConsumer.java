@@ -39,21 +39,4 @@ public class CustomerConsumer {
         } 
     }
     
-    /**
-     * 이체 정보를  업데이트 합니다.
-     * @param customer
-     * @throws SystemException
-     */
-    @KafkaListener(topics = "${updating.transfer.limit.topic.name}", containerFactory = "customerKafkaListenerContainerFactory")
-    public void updatingTransferLimitListener(Customer customer, Acknowledgment ack) {
-    	LOGGER.info("Recieved updating transfer limit message: " + customer.getCstmId());
-        try {
-        	inquiryService.updateTransferLimit(customer);
-        	
-           	ack.acknowledge();
-        } catch(Exception e) {
-        	String msg = " 이체 정보를 저장 중에 문제가 발생했습니다.";
-        	LOGGER.error(customer.getCstmId() + msg,e);
-        } 
-    }
 }
