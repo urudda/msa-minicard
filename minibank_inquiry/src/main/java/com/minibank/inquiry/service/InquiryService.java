@@ -9,6 +9,5 @@ public interface InquiryService {
     public int createAccount(Account account) throws Exception;
     public int updateTransferLimit(Customer customer) throws Exception;
     public int updateAccountBalance(Account account) throws Exception;
-//    public int createAccountAndUpdateAccountWork(Account account) throws Exception;
-//    public int createCustomerAndCustomerWork(Customer customer) throws Exception;
+
 }
